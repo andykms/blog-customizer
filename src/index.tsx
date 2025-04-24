@@ -4,15 +4,26 @@ import clsx from 'clsx';
 
 import { Article } from './components/article/Article';
 import { ArticleParamsForm } from './components/article-params-form/ArticleParamsForm';
-import { defaultArticleState } from './constants/articleProps';
+import {
+	defaultArticleState,
+	fontFamilyOptions,
+	fontFamilyClasses,
+} from './constants/articleProps';
 
 import './styles/index.scss';
 import styles from './styles/index.module.scss';
+import { Select } from './ui/select';
 
 const domNode = document.getElementById('root') as HTMLDivElement;
 const root = createRoot(domNode);
 
 const App = () => {
+	const FontParam = (
+		<Select
+			selected={null}
+			options={fontFamilyOptions}
+			placeholder={fontFamilyClasses[0]}></Select>
+	);
 	return (
 		<main
 			className={clsx(styles.main)}
@@ -25,7 +36,7 @@ const App = () => {
 					'--bg-color': defaultArticleState.backgroundColor.value,
 				} as CSSProperties
 			}>
-			<ArticleParamsForm />
+			<ArticleParamsForm>{FontParam}</ArticleParamsForm>
 			<Article />
 		</main>
 	);
