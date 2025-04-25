@@ -1,28 +1,146 @@
 import { ArrowButton } from 'src/ui/arrow-button';
 import { Button } from 'src/ui/button';
-import { useState, ReactNode } from 'react';
+import { useState, MouseEvent } from 'react';
 import styles from './ArticleParamsForm.module.scss';
+import { OptionType, defaultArticleState } from 'src/constants/articleProps';
+import { Params, uiParamProps } from '../param/Params';
 
 interface ArticleParamsFormProps {
-	children: ReactNode;
+	isOpenInStart: boolean;
+	onSubmitOptions: (options: IArticleOptions) => void;
 }
 
-export const ArticleParamsForm = ({ children }: ArticleParamsFormProps) => {
-	const [isOpen, setOpen] = useState(false);
+interface IArticleOptions {
+	fontFamily: OptionType;
+	fontSize: OptionType;
+	Color: OptionType;
+	Background: OptionType;
+	width: OptionType;
+}
+
+export const ArticleParamsForm = (props: ArticleParamsFormProps) => {
+	const { isOpenInStart, onSubmitOptions } = props;
+
+	const [isOpen, setOpen] = useState(isOpenInStart);
 
 	const onClick = () => {
 		setOpen((prev) => !prev);
 	};
 
+	const [articleFont, setArticleFont] = useState<OptionType>(
+		defaultArticleState.fontFamilyOption
+	);
+	const [articleSize, setArticleFontSize] = useState<OptionType>(
+		defaultArticleState.fontSizeOption
+	);
+	const [articleColor, setArticleColor] = useState<OptionType>(
+		defaultArticleState.fontColor
+	);
+	const [articleBackground, setArticleBackground] = useState<OptionType>(
+		defaultArticleState.backgroundColor
+	);
+	const [articleWidth, setArticleWidth] = useState<OptionType>(
+		defaultArticleState.contentWidth
+	);
+
+	const fontFamilyParamProps: uiParamProps = {
+		onChange: (selected: OptionType) => {
+			setArticleFont(selected);
+		},
+		selected: articleFont,
+	};
+
+	const fontSizeParamProps: uiParamProps = {
+		onChange: (selected: OptionType) => {
+			setArticleFontSize(selected);
+		},
+		selected: articleSize,
+	};
+
+	const fontColorParamProps: uiParamProps = {
+		onChange: (selected: OptionType) => {
+			setArticleColor(selected);
+		},
+		selected: articleColor,
+	};
+
+	const backgroundParamProps: uiParamProps = {
+		onChange: (selected: OptionType) => {
+			setArticleBackground(selected);
+		},
+		selected: articleBackground,
+	};
+
+	const widthParamProps: uiParamProps = {
+		onChange: (selected: OptionType) => {
+			setArticleWidth(selected);
+		},
+		selected: articleWidth,
+	};
+
+	const onClickSubmit = (event: MouseEvent<HTMLButtonElement>) => {
+		event.preventDefault();
+		submitOptions({
+			fontFamily: articleFont,
+			fontSize: articleSize,
+			Color: articleColor,
+			Background: articleBackground,
+			width: articleWidth,
+		});
+	};
+
+	const submitOptions = (options: IArticleOptions) => {
+		onSubmitOptions(options);
+	};
+
+	const resetArticleOptions = () => {
+		setArticleFont(defaultArticleState.fontFamilyOption);
+		setArticleFontSize(defaultArticleState.fontSizeOption);
+		setArticleColor(defaultArticleState.fontColor);
+		setArticleBackground(defaultArticleState.backgroundColor);
+		setArticleWidth(defaultArticleState.contentWidth);
+	};
+
+	const onClickReset = (event: MouseEvent<HTMLButtonElement>) => {
+		event.preventDefault();
+		resetArticleOptions();
+		submitOptions({
+			fontFamily: defaultArticleState.fontFamilyOption,
+			fontSize: defaultArticleState.fontSizeOption,
+			Color: defaultArticleState.fontColor,
+			Background: defaultArticleState.backgroundColor,
+			width: defaultArticleState.contentWidth,
+		});
+	};
+
 	return (
 		<>
 			<ArrowButton isOpen={isOpen} onClick={onClick} />
-			<aside className={styles.container}>
+			<aside
+				className={`${styles.container} ${
+					isOpen ? styles.container_open : ''
+				}`}>
 				<form className={styles.form}>
-					{children}
+					<Params
+						fontProps={fontFamilyParamProps}
+						fontSizeProps={fontSizeParamProps}
+						fontColorProps={fontColorParamProps}
+						backgroundProps={backgroundParamProps}
+						widthProps={widthParamProps}
+					/>
 					<div className={styles.bottomContainer}>
-						<Button title='Сбросить' htmlType='reset' type='clear' />
-						<Button title='Применить' htmlType='submit' type='apply' />
+						<Button
+							title='Сбросить'
+							htmlType='reset'
+							type='clear'
+							onClick={onClickReset}
+						/>
+						<Button
+							title='Применить'
+							htmlType='submit'
+							type='apply'
+							onClick={onClickSubmit}
+						/>
 					</div>
 				</form>
 			</aside>
