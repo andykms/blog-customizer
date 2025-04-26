@@ -1,6 +1,6 @@
 import { ArrowButton } from 'src/ui/arrow-button';
 import { Button } from 'src/ui/button';
-import { useState, MouseEvent, useEffect, useRef } from 'react';
+import { useState, MouseEvent, useEffect, useRef, FormEvent } from 'react';
 import styles from './ArticleParamsForm.module.scss';
 import { OptionType, defaultArticleState } from 'src/constants/articleProps';
 import { Params, uiParamProps } from '../param/Params';
@@ -92,7 +92,7 @@ export const ArticleParamsForm = (props: ArticleParamsFormProps) => {
 		selected: articleWidth,
 	};
 
-	const onClickSubmit = (event: MouseEvent<HTMLButtonElement>) => {
+	const onClickSubmit = (event: FormEvent) => {
 		event.preventDefault();
 		submitOptions({
 			fontFamily: articleFont,
@@ -115,7 +115,7 @@ export const ArticleParamsForm = (props: ArticleParamsFormProps) => {
 		setArticleWidth(defaultArticleState.contentWidth);
 	};
 
-	const onClickReset = (event: MouseEvent<HTMLButtonElement>) => {
+	const onClickReset = (event: FormEvent) => {
 		event.preventDefault();
 		resetArticleOptions();
 		submitOptions({
@@ -133,7 +133,10 @@ export const ArticleParamsForm = (props: ArticleParamsFormProps) => {
 			<aside
 				className={`${styles.container} ${isOpen ? styles.container_open : ''}`}
 				ref={asideRef}>
-				<form className={styles.form}>
+				<form
+					className={styles.form}
+					onReset={onClickReset}
+					onSubmit={onClickSubmit}>
 					<Params
 						fontProps={fontFamilyParamProps}
 						fontSizeProps={fontSizeParamProps}
@@ -142,18 +145,8 @@ export const ArticleParamsForm = (props: ArticleParamsFormProps) => {
 						widthProps={widthParamProps}
 					/>
 					<div className={styles.bottomContainer}>
-						<Button
-							title='Сбросить'
-							htmlType='reset'
-							type='clear'
-							onClick={onClickReset}
-						/>
-						<Button
-							title='Применить'
-							htmlType='submit'
-							type='apply'
-							onClick={onClickSubmit}
-						/>
+						<Button title='Сбросить' htmlType='reset' type='clear' />
+						<Button title='Применить' htmlType='submit' type='apply' />
 					</div>
 				</form>
 			</aside>
