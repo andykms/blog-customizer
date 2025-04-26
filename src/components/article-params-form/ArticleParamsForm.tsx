@@ -18,6 +18,12 @@ interface IArticleOptions {
 	width: OptionType;
 }
 
+const changeFormFunction = (setter: (selected: OptionType) => void) => {
+	return (selected: OptionType) => {
+		setter(selected);
+	};
+};
+
 export const ArticleParamsForm = (props: ArticleParamsFormProps) => {
 	const { isOpenInStart, onSubmitOptions } = props;
 
@@ -62,37 +68,27 @@ export const ArticleParamsForm = (props: ArticleParamsFormProps) => {
 	);
 
 	const fontFamilyParamProps: uiParamProps = {
-		onChange: (selected: OptionType) => {
-			setArticleFont(selected);
-		},
+		onChange: changeFormFunction(setArticleFont),
 		selected: articleFont,
 	};
 
 	const fontSizeParamProps: uiParamProps = {
-		onChange: (selected: OptionType) => {
-			setArticleFontSize(selected);
-		},
+		onChange: changeFormFunction(setArticleFontSize),
 		selected: articleSize,
 	};
 
 	const fontColorParamProps: uiParamProps = {
-		onChange: (selected: OptionType) => {
-			setArticleColor(selected);
-		},
+		onChange: changeFormFunction(setArticleColor),
 		selected: articleColor,
 	};
 
 	const backgroundParamProps: uiParamProps = {
-		onChange: (selected: OptionType) => {
-			setArticleBackground(selected);
-		},
+		onChange: changeFormFunction(setArticleBackground),
 		selected: articleBackground,
 	};
 
 	const widthParamProps: uiParamProps = {
-		onChange: (selected: OptionType) => {
-			setArticleWidth(selected);
-		},
+		onChange: changeFormFunction(setArticleWidth),
 		selected: articleWidth,
 	};
 
