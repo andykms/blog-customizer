@@ -1,6 +1,6 @@
 import { ArrowButton } from 'src/ui/arrow-button';
 import { Button } from 'src/ui/button';
-import { useState, MouseEvent } from 'react';
+import { useState, MouseEvent, useEffect, useRef } from 'react';
 import styles from './ArticleParamsForm.module.scss';
 import { OptionType, defaultArticleState } from 'src/constants/articleProps';
 import { Params, uiParamProps } from '../param/Params';
@@ -21,11 +21,29 @@ interface IArticleOptions {
 export const ArticleParamsForm = (props: ArticleParamsFormProps) => {
 	const { isOpenInStart, onSubmitOptions } = props;
 
+	const asideRef = useRef<HTMLDivElement>(null);
+
 	const [isOpen, setOpen] = useState(isOpenInStart);
 
-	const onClick = () => {
-		setOpen((prev) => !prev);
+	const onClick = (event: MouseEvent<HTMLElement>) => {
+		if (!asideRef.current?.contains(event.target as HTMLElement)) {
+			setOpen((prev) => !prev);
+		}
 	};
+
+	useEffect(() => {
+		if (isOpen) {
+			window.addEventListener('mousedown', onClick as unknown as EventListener);
+			console.log('Add');
+		}
+		return () => {
+			window.removeEventListener(
+				'mousedown',
+				onClick as unknown as EventListener
+			);
+			console.log('Remove');
+		};
+	}, [isOpen]);
 
 	const [articleFont, setArticleFont] = useState<OptionType>(
 		defaultArticleState.fontFamilyOption
@@ -117,9 +135,8 @@ export const ArticleParamsForm = (props: ArticleParamsFormProps) => {
 		<>
 			<ArrowButton isOpen={isOpen} onClick={onClick} />
 			<aside
-				className={`${styles.container} ${
-					isOpen ? styles.container_open : ''
-				}`}>
+				className={`${styles.container} ${isOpen ? styles.container_open : ''}`}
+				ref={asideRef}>
 				<form className={styles.form}>
 					<Params
 						fontProps={fontFamilyParamProps}
