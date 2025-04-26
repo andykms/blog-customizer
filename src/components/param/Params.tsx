@@ -10,10 +10,10 @@ import {
 	OptionType,
 } from 'src/constants/articleProps';
 
-type paramHandlerChange = (selected: OptionType) => void;
+type ChangeCallback = (selected: OptionType) => void;
 
 export interface uiParamProps {
-	onChange: paramHandlerChange;
+	onChange: ChangeCallback;
 	selected: OptionType;
 }
 
@@ -34,33 +34,13 @@ export const Params = (props: paramsProps) => {
 		widthProps,
 	} = props;
 
-	const onChangeFont = (selected: OptionType) => {
-		fontProps.onChange(selected);
-	};
-
-	const onChangeFontSize = (selected: OptionType) => {
-		fontSizeProps.onChange(selected);
-	};
-
-	const onChangeColor = (selected: OptionType) => {
-		fontColorProps.onChange(selected);
-	};
-
-	const onChangeBackground = (selected: OptionType) => {
-		backgroundProps.onChange(selected);
-	};
-
-	const onChangeWidth = (selected: OptionType) => {
-		widthProps.onChange(selected);
-	};
-
 	const FontParam = (
 		<Select
 			selected={fontProps.selected}
 			options={fontFamilyOptions}
 			placeholder={fontProps.selected.title}
 			title={'ШРИФТ'}
-			onChange={onChangeFont}></Select>
+			onChange={fontProps.onChange}></Select>
 	);
 
 	const FontSizeParam = (
@@ -69,7 +49,7 @@ export const Params = (props: paramsProps) => {
 			title={'РАЗМЕР ШРИФТА'}
 			options={fontSizeOptions}
 			selected={fontSizeProps.selected}
-			onChange={onChangeFontSize}></RadioGroup>
+			onChange={fontSizeProps.onChange}></RadioGroup>
 	);
 
 	const FontColorParam = (
@@ -78,7 +58,7 @@ export const Params = (props: paramsProps) => {
 			options={fontColors}
 			placeholder={fontColorProps.selected.title}
 			title={'ЦВЕТ ШРИФТА'}
-			onChange={onChangeColor}></Select>
+			onChange={fontColorProps.onChange}></Select>
 	);
 
 	const SeparatorAfterFont = <Separator></Separator>;
@@ -88,7 +68,7 @@ export const Params = (props: paramsProps) => {
 			selected={backgroundProps.selected}
 			options={backgroundColors}
 			placeholder={backgroundProps.selected.title}
-			onChange={onChangeBackground}
+			onChange={backgroundProps.onChange}
 			title={'ЦВЕТ ФОНА'}></Select>
 	);
 
@@ -97,7 +77,7 @@ export const Params = (props: paramsProps) => {
 			selected={widthProps.selected}
 			options={contentWidthArr}
 			placeholder={widthProps.selected.title}
-			onChange={onChangeWidth}
+			onChange={widthProps.onChange}
 			title='ШИРИНА КОНТЕНТА'></Select>
 	);
 

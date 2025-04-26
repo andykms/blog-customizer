@@ -9,7 +9,7 @@ import { defaultArticleState, OptionType } from './constants/articleProps';
 import './styles/index.scss';
 import styles from './styles/index.module.scss';
 
-interface IStyleOptions {
+export interface IStyleOptions {
 	fontFamily: OptionType;
 	fontSize: OptionType;
 	Color: OptionType;
@@ -36,33 +36,13 @@ const App = () => {
 	const [currWidth, setWidth] = useState<OptionType>(
 		defaultArticleState.contentWidth
 	);
-	/*
-	const onChangeFont = (selected: OptionType) => {
-		setFont(selected);
-	}
-
-	const onChangeFontSize = (selected: OptionType) => {
-		setFontSize(selected);
-	}
-
-	const onChangeColor = (selected: OptionType) => {
-		setColor(selected);
-	}
-
-	const onChangeBackground = (selected: OptionType) => {
-		setBackground(selected);
-	}
-
-	const onChangeWidth = (selected: OptionType) => {
-		setWidth(selected);
-	}
-*/
 	const onChangeStyles = (options: IStyleOptions) => {
 		setFont(options.fontFamily);
 		setFontSize(options.fontSize), setColor(options.Color);
 		setBackground(options.Background);
 		setWidth(options.width);
 	};
+
 	return (
 		<main
 			className={clsx(styles.main)}

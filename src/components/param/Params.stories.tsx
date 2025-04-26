@@ -1,10 +1,10 @@
-/*import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 
 import { Params } from './Params';
 import { createElement, useState } from 'react';
-import { OptionType } from 'src/constants/articleProps';
+import { OptionType, defaultArticleState } from 'src/constants/articleProps';
 import { ArticleParamsForm } from '../article-params-form';
-import { defaultArticleState } from 'src/constants/articleProps';
+import { IStyleOptions } from 'src/index';
 const meta: Meta<typeof Params> = {
 	component: Params,
 };
@@ -15,42 +15,32 @@ type Story = StoryObj<typeof Params>;
 export const ParamsStory: Story = {
 	render: () =>
 		createElement(() => {
-			const [currFont, setFont] = useState<OptionType>(defaultArticleState.fontFamilyOption);
-				const [currFontSize, setFontSize] = useState<OptionType>(defaultArticleState.fontSizeOption);
-				const [currColor, setColor] = useState<OptionType>(defaultArticleState.fontColor);
-				const [currBackground, setBackground] = useState<OptionType>(defaultArticleState.backgroundColor);
-				const [currWidth, setWidth] = useState<OptionType>(defaultArticleState.contentWidth);
-			
-				const onChangeFont = (selected: OptionType) => {
-					setFont(selected);
-				}
-			
-				const onChangeFontSize = (selected: OptionType) => {
-					setFontSize(selected);
-				}
-			
-				const onChangeColor = (selected: OptionType) => {
-					setColor(selected);
-				}
-			
-				const onChangeBackground = (selected: OptionType) => {
-					setBackground(selected);
-				}
-			
-				const onChangeWidth = (selected: OptionType) => {
-					setWidth(selected);
-				}
+			const setFont = useState<OptionType>(
+				defaultArticleState.fontFamilyOption
+			)[1];
+			const setFontSize = useState<OptionType>(
+				defaultArticleState.fontSizeOption
+			)[1];
+			const setColor = useState<OptionType>(defaultArticleState.fontColor)[1];
+			const setBackground = useState<OptionType>(
+				defaultArticleState.backgroundColor
+			)[1];
+			const setWidth = useState<OptionType>(
+				defaultArticleState.contentWidth
+			)[1];
+
+			const onChangeStyles = (options: IStyleOptions) => {
+				setFont(options.fontFamily);
+				setFontSize(options.fontSize), setColor(options.Color);
+				setBackground(options.Background);
+				setWidth(options.width);
+			};
 			return (
-        <div style={{height: 'auto'}}>
-          <ArticleParamsForm isOpenInStart={false} changeEvents={{
-				onChangeFontFamily: onChangeFont,
-				onChangeFontSize: onChangeFontSize,
-				onChangeColor: onChangeColor,
-				onChangeBackground: onChangeBackground,
-				onChangeWidth: onChangeWidth,
-			}}>
-			</ArticleParamsForm>
-        </div>);
+				<div style={{ height: 'auto' }}>
+					<ArticleParamsForm
+						isOpenInStart={false}
+						onSubmitOptions={onChangeStyles}></ArticleParamsForm>
+				</div>
+			);
 		}),
 };
-*/
